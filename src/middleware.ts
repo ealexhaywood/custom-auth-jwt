@@ -10,10 +10,12 @@ const user = {
 const jwt = Buffer.from(JSON.stringify(user)).toString("base64");
 
 export function middleware(request: NextRequest) {
-  request.cookies.set("jwt", jwt);
+  if (process.env.NODE_ENV === "development") {
+    request.cookies.set("jwt", jwt);
 
-  const response = NextResponse.next();
-  response.cookies.set("jwt", jwt);
+    const response = NextResponse.next();
+    response.cookies.set("jwt", jwt);
 
-  return response;
+    return response;
+  }
 }
